@@ -6,10 +6,19 @@
   "name": "Google ASP.NET Core MVC",
   "shortName": "gcpmvc",
   "description": "ASP.NET Core MVC template for Google Cloud",
-  "classifications": [ "GCP", "Web", "ASP.NET", "MVC" ],
+  "classifications": [
+    "GCP",
+    "Web",
+    "ASP.NET",
+    "MVC"
+  ],
   "defaultName": "MyGoogleCloudMvcApp",
   "sourceName": "MyGcpMvcProject",
   "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
   "sources": [
     {
       "source": "./",
@@ -26,7 +35,9 @@
       "modifiers": [
         {
           "condition": "(!Framework1)",
-          "exclude": [ "Startup.cs" ]
+          "exclude": [
+            "Startup.cs"
+          ]
         }
       ]
     }
@@ -35,7 +46,6 @@
     "Framework": {
       "type": "parameter",
       "datatype": "choice",
-
       "choices": [
         {
           "choice": "netcoreapp1.0",
@@ -54,12 +64,10 @@
           "description": ".NET Core 2.1"
         }
       ],
-
       "defaultValue": "netcoreapp2.1",
       "replaces": "netcoreapp2.1",
       "description": "The target Framework."
     },
-
     "gcp-project-id": {
       "type": "parameter",
       "datatype": "text",
@@ -67,51 +75,47 @@
       "description": "The id of the Google Cloud Platform project to send Stackdriver logs to. Only reqired when running outside of GCP.",
       "replaces": "gcp-project-id"
     },
-
     "createYear": {
       "type": "generated",
       "generator": "now",
-      "parameters": { "format": "yyyy" },
+      "parameters": {
+        "format": "yyyy"
+      },
       "replaces": "2017"
     },
-
     "port": {
       "type": "generated",
       "generator": "port",
-      "parameters": { "fallback": 5000 },
+      "parameters": {
+        "fallback": 5000
+      },
       "replaces": "5000"
     },
-
     "Framework2_1": {
       "type": "computed",
       "datatype": "bool",
       "value": "(Framework == \"netcoreapp2.1\")"
     },
-
     "Framework2_0": {
       "type": "computed",
       "datatype": "bool",
       "value": "(Framework == \"netcoreapp2.0\")"
     },
-
     "Framework2": {
       "type": "computed",
       "datatype": "bool",
       "value": "(Framework2_0 || Framework2_1)"
     },
-
     "Framework1_1": {
       "type": "computed",
       "datatype": "bool",
       "value": "(Framework == \"netcoreapp1.1\")"
     },
-
     "Framework1_0": {
       "type": "computed",
       "datatype": "bool",
       "value": "(Framework == \"netcoreapp1.0\")"
     },
-
     "Framework1": {
       "type": "computed",
       "datatype": "bool",
