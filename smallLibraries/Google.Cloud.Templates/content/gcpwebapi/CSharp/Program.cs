@@ -1,36 +1,35 @@
 ﻿#if (Framework1)
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Builder;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-#elif (Frameowork2)
+
+#elif (Framework2)
 using Google.Cloud.Diagnostics.AspNetCore;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
-#endif
 
+#endif
 namespace GcpWebApiTemplateProject
 {
     public class Program
     {
 #if (Framework2)
-        private static IHostingEnvironment HostingEnvironment { get; private set; }
-        private static IConfiguration Configuration { get; private set; }
+        private static IHostingEnvironment HostingEnvironment { get; set; }
+        private static IConfiguration Configuration { get; set; }
 
-        private static string GcpProjectId { get; private set; }
+        private static string GcpProjectId { get; set; }
         private static bool HasGcpProjectId => !string.IsNullOrEmpty(GcpProjectId);
 
 #endif
-        public static void Main(string[] args) => BuildWebHost(args).Run();
+        public static void Main(string[] args)
+        {
+            BuildWebHost(args).Run();
+        }
 
         private static IWebHost BuildWebHost(string[] args) =>
 #if (Framework1)
@@ -41,11 +40,10 @@ namespace GcpWebApiTemplateProject
                 .UseStartup<Startup>()
                 .Build();
 #elif (Framework2)
-            WebHost.DefaultWebHostBuilder(args)
+            WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
-                .ConfigureAppConfiguration((context, configBuilder) =>
-                {
+                .ConfigureAppConfiguration((context, configBuilder) => {
                     HostingEnvironment = context.HostingEnvironment;
 
                     configBuilder.SetBasePath(HostingEnvironment.ContentRootPath)
@@ -56,8 +54,7 @@ namespace GcpWebApiTemplateProject
                     Configuration = configBuilder.Build();
                     GcpProjectId = GetProjectId(Configuration);
                 })
-                .ConfigureServices(services =>
-                {
+                .ConfigureServices(services => {
                     // Add framework services.Microsoft.VisualStudio.ExtensionManager.ExtensionManagerService
                     services.AddMvc();
 
@@ -67,8 +64,7 @@ namespace GcpWebApiTemplateProject
                         services.AddGoogleTrace(options => options.ProjectId = GcpProjectId);
                         // Sends Exceptions to Stackdriver Error Reporting.
                         services.AddGoogleExceptionLogging(
-                            options =>
-                            {
+                            options => {
                                 options.ProjectId = GcpProjectId;
                                 options.ServiceName = GetServiceName(Configuration);
                                 options.Version = GetVersion(Configuration);
@@ -76,8 +72,7 @@ namespace GcpWebApiTemplateProject
                         services.AddSingleton<ILoggerProvider>(sp => GoogleLoggerProvider.Create(GcpProjectId));
                     }
                 })
-                .ConfigureLogging(loggingBuilder =>
-                {
+                .ConfigureLogging(loggingBuilder => {
                     loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
                     if (HostingEnvironment.IsDevelopment())
                     {
@@ -87,8 +82,7 @@ namespace GcpWebApiTemplateProject
                         loggingBuilder.AddDebug();
                     }
                 })
-                .Configure((app) =>
-                {
+                .Configure((app) => {
                     var logger = app.ApplicationServices.GetService<ILoggerFactory>().CreateLogger("Startup");
 
                     if (HasGcpProjectId)

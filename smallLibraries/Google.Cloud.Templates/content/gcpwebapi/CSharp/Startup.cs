@@ -1,14 +1,11 @@
-﻿#if (Frameowork1)
+﻿#if (Framework1)
 using Google.Cloud.Diagnostics.AspNetCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace GcpWebApiTemplateProject
 {
@@ -43,8 +40,7 @@ namespace GcpWebApiTemplateProject
                 services.AddGoogleTrace(options => options.ProjectId = ProjectId);
                 // Sends Exceptions to Stackdriver Error Reporting.
                 services.AddGoogleExceptionLogging(
-                    options =>
-                    {
+                    options => {
                         options.ProjectId = ProjectId;
                         options.ServiceName = GetServiceName();
                         options.Version = GetVersion();
