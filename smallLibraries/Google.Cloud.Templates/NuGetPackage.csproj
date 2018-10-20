@@ -17,8 +17,9 @@
     <ContentTargetFolders>content</ContentTargetFolders>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
   <ItemGroup>
-    <Content Include="content/**" Exclude="**/*.user;**/.vs/**;**/node_modules/**;**/bin/**;**/obj/**" >
+    <Content Include="content/**" Exclude="**/*.user;**/.vs/**;**/node_modules/**;**/bin/**;**/obj/**">
       <Pack>true</Pack>
       <PackagePath>content\</PackagePath>
     </Content>
